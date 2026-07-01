@@ -1,19 +1,22 @@
-import praw, os, config
+import praw, os, sys
 from praw.models import Submission, Comment
-from datetime import datetime
+from datetime import datetime, timezone
+from dotenv import load_dotenv
 
-reddit = praw.Reddit(client_id=config.client_id,
-                     client_secret=config.client_secret,
-                     username=config.username,
-                     password=config.password,
+load_dotenv()
+
+reddit = praw.Reddit(client_id=os.environ.get('REDDIT_CLIENT_ID'),
+                     client_secret=os.environ.get('REDDIT_CLIENT_SECRET'),
+                     username=os.environ.get('REDDIT_USERNAME'),
+                     password=os.environ.get('REDDIT_PASSWORD'),
                      user_agent='Reddit Saved Saver by /u/tobiasvl')
 
 print("Fetching...")
 
 try:
     saved = reddit.user.me().saved(limit=1000)
-except:
-    sys.exit("Failed to find your saved posts, did you add your credentials to config.py?")
+except Exception as e:
+    sys.exit(f"Failed to find your saved posts, check your .env credentials. Error: {e}")
 
 top_dir = 'reddit/'
 
@@ -29,7 +32,7 @@ for submission in saved:
         f.write('---\n')
         f.write('id: ' + submission.id + '\n')
         f.write('subreddit: /r/' + submission.subreddit.display_name + '\n')
-        f.write('timestamp: ' + str(datetime.utcfromtimestamp(submission.created_utc)) + '\n')
+        f.write('timestamp: ' + str(datetime.fromtimestamp(submission.created_utc, tz=timezone.utc)) + '\n')
         try:
             f.write('author: /u/' + submission.author.name + '\n')
         except:

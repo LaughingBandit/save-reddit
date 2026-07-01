@@ -8,8 +8,8 @@ I made this to dump all my saved Reddit stuff into [Obsidian](https://obsidian.m
 Usage
 -----
 
-You need to create a Reddit app on https://old.reddit.com/prefs/apps/ and then put the client ID, secret key, as well as your Reddit username and password into `config.py`.
+You need to create a Reddit app on https://old.reddit.com/prefs/apps/ and then put the client ID, secret key, as well as your Reddit username and password into a `.env` file (see `.env.example`).
 
-Make sure `praw` is installed, and then run the script with `python reddit-saved-saver.py`.
+Install the required dependencies using `pip install -r requirements.txt`, and then run the script with `python reddit-saved-saver.py`.
 
 The script will create a directory called `reddit` and then make a new subdirectory per subreddit.
