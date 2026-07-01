@@ -2,3 +2,4 @@ reddit/
 __pycache__/
 .env
 config.py
+.venv
